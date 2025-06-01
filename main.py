@@ -60,7 +60,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # --- Configuration ---
-TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "YOUR_TELEGRAM_BOT_TOKEN")
+TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "7834336817:AAEMHBep-iLrFP87_ndzlhIGBh4dUD8z5Kg")
 
 # IMPORTANT: Set your Telegram User ID(s) here for admin commands
 ADMIN_CHAT_IDS = [123456789]  # Replace 123456789 with your actual Telegram user ID(s)
