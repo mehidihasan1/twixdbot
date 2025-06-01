@@ -39,7 +39,10 @@ import logging
 import os
 from functools import wraps
 
-from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton, ParseMode
+# Corrected import for ParseMode for newer python-telegram-bot versions
+from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
+from telegram.constants import ParseMode 
+
 from telegram.ext import (
     Application,
     CommandHandler,
@@ -57,7 +60,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # --- Configuration ---
-TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "7834336817:AAEMHBep-iLrFP87_ndzlhIGBh4dUD8z5Kg")
+TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "YOUR_TELEGRAM_BOT_TOKEN")
 
 # IMPORTANT: Set your Telegram User ID(s) here for admin commands
 ADMIN_CHAT_IDS = [123456789]  # Replace 123456789 with your actual Telegram user ID(s)
@@ -449,8 +452,6 @@ async def list_my_numbers_command(update: Update, context: ContextTypes.DEFAULT_
         
     reply_markup = InlineKeyboardMarkup(keyboard_rows)
     full_message = response_text + "\n👇 Manage your numbers:"
-    # Telegram message length limit is 4096. Markdown adds to length.
-    # This simple check might not be perfect for very long lists with markdown.
     if len(full_message) > 4000: 
         await update.message.reply_text(response_text, parse_mode=ParseMode.MARKDOWN)
         await update.message.reply_text("👇 Manage your numbers:", reply_markup=reply_markup, parse_mode=ParseMode.MARKDOWN)
@@ -503,7 +504,7 @@ async def check_sms_command(update: Update, context: ContextTypes.DEFAULT_TYPE) 
     if len(args) > 1:
         try:
             limit = int(args[1])
-            if not (1 <= limit <= 20): # Max 20 for brevity in chat
+            if not (1 <= limit <= 20): 
                 await update.message.reply_text("⚠️ Limit must be between 1 and 20.", parse_mode=ParseMode.MARKDOWN)
                 return
         except ValueError:
@@ -623,7 +624,6 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
                 parse_mode=ParseMode.MARKDOWN
             )
         elif action == "owner_info":
-            # Edit the existing message (which was the main menu) to show owner info
             await query.edit_message_text(OWNER_DETAILS_TEXT, reply_markup=None, parse_mode=ParseMode.MARKDOWN)
     
     elif data.startswith(BUY_CALLBACK_PREFIX):
@@ -674,7 +674,7 @@ def main() -> None:
     # Callback Query Handler for buttons
     application.add_handler(CallbackQueryHandler(button_callback_handler))
     
-    logger.info("Bot is starting with enhanced design, owner info, and basic admin features...")
+    logger.info("Bot is starting with corrected ParseMode import, owner info, and basic admin features...")
     application.run_polling()
     logger.info("Bot has stopped.")
 
